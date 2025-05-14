@@ -1,0 +1,1263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elegant Gold Logo Generator</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #121212;
+            color: #e0e0e0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            min-height: 100vh;
+            margin: 0;
+        }
+        
+        h1 {
+            color: #D4AF37;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 800px;
+        }
+        
+        .canvas-container {
+            margin: 20px 0;
+            background-color: #1a1a1a;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+        }
+        
+        canvas {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        .controls {
+            background-color: #1a1a1a;
+            padding: 20px;
+            border-radius: 8px;
+            width: 100%;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+        }
+        
+        .control-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #D4AF37;
+            font-weight: bold;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #333;
+            background-color: #2a2a2a;
+            color: #e0e0e0;
+            border-radius: 4px;
+        }
+        
+        input[type="color"] {
+            height: 40px;
+            cursor: pointer;
+        }
+        
+        button {
+            background-color: #D4AF37;
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 10px;
+        }
+        
+        button:hover {
+            background-color: #F5D76E;
+        }
+        
+        .footer {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 14px;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Elegant Gold Logo Generator</h1>
+        
+        <div class="controls">
+            <div class="control-group">
+                <label for="logoText">Logo Text:</label>
+                <input type="text" id="logoText" value="PRODUCT" maxlength="20">
+            </div>
+            
+            <div class="control-group">
+                <label for="logoColor">Logo Color:</label>
+                <input type="color" id="logoColor" value="#D4AF37">
+            </div>
+            
+            <div class="control-group">
+                <label>Background Type:</label>
+                <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                    <label style="display: inline-flex; align-items: center; margin-right: 15px;">
+                        <input type="radio" name="bgType" id="solidBgType" checked style="width: auto; margin-right: 5px;">
+                        Solid Color
+                    </label>
+                    <label style="display: inline-flex; align-items: center; margin-right: 15px;">
+                        <input type="radio" name="bgType" id="patternBgType" style="width: auto; margin-right: 5px;">
+                        Pattern
+                    </label>
+                    <label style="display: inline-flex; align-items: center;">
+                        <input type="radio" name="bgType" id="imageBgType" style="width: auto; margin-right: 5px;">
+                        Image
+                    </label>
+                </div>
+            </div>
+            
+            <div id="bgColorGroup" class="control-group">
+                <label for="bgColor">Background Color:</label>
+                <input type="color" id="bgColor" value="#121212">
+            </div>
+            
+            <div id="patternGroup" class="control-group" style="display: none;">
+                <label for="patternType">Pattern Type:</label>
+                <select id="patternType">
+                    <option value="grid">Grid</option>
+                    <option value="dots">Dots</option>
+                    <option value="diagonalLines">Diagonal Lines</option>
+                    <option value="chevron">Chevron</option>
+                    <option value="hexagons">Hexagons</option>
+                </select>
+                
+                <div style="margin-top: 10px;">
+                    <label for="patternColor">Pattern Color:</label>
+                    <input type="color" id="patternColor" value="#333333">
+                </div>
+                
+                <div style="margin-top: 10px;">
+                    <label for="patternSize">Pattern Size:</label>
+                    <input type="range" id="patternSize" min="5" max="50" value="20">
+                </div>
+                
+                <div style="margin-top: 10px;">
+                    <label for="patternOpacity">Pattern Opacity:</label>
+                    <input type="range" id="patternOpacity" min="10" max="100" value="50">
+                </div>
+                
+                <div style="margin-top: 10px;">
+                    <label for="bgColorPattern">Background Color:</label>
+                    <input type="color" id="bgColorPattern" value="#121212">
+                </div>
+            </div>
+            
+            <div id="bgImageGroup" class="control-group" style="display: none;">
+                <label for="bgImage">Upload Background Image:</label>
+                <input type="file" id="bgImage" accept="image/*">
+                
+                <div style="margin-top: 10px;">
+                    <label for="bgOpacity">Background Opacity:</label>
+                    <input type="range" id="bgOpacity" min="10" max="100" value="100">
+                </div>
+                
+                <div style="margin-top: 10px;">
+                    <label for="bgSize">Background Size:</label>
+                    <input type="range" id="bgSize" min="100" max="200" value="100">
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <label for="fontSize">Font Size:</label>
+                <input type="range" id="fontSize" min="20" max="60" value="36">
+            </div>
+            
+            <div class="control-group">
+                <label for="circleSize">Circle Size:</label>
+                <input type="range" id="circleSize" min="150" max="350" value="250">
+            </div>
+            
+            <div class="control-group">
+                <label for="decorationStyle">Decoration Style:</label>
+                <select id="decorationStyle">
+                    <option value="luxury">Luxury Leaves</option>
+                    <option value="ornate">Ornate Scrolls</option>
+                    <option value="floral">Floral</option>
+                    <option value="geometric">Geometric</option>
+                    <option value="elegant">Elegant Minimal</option>
+                </select>
+            </div>
+            
+            <div class="control-group" style="margin-top: 20px; border-top: 1px solid #333; padding-top: 20px;">
+                <label style="color: #F5D76E; font-size: 18px;">Logo Content:</label>
+                <div style="display: flex; gap: 10px; margin: 15px 0;">
+                    <label style="display: inline-flex; align-items: center; margin-right: 15px;">
+                        <input type="radio" name="logoType" id="textType" checked style="width: auto; margin-right: 5px;">
+                        Text
+                    </label>
+                    <label style="display: inline-flex; align-items: center;">
+                        <input type="radio" name="logoType" id="imageType" style="width: auto; margin-right: 5px;">
+                        Image
+                    </label>
+                </div>
+            </div>
+            
+            <div id="textGroup" class="control-group">
+                <label for="logoText">Logo Text:</label>
+                <input type="text" id="logoText" value="PRODUCT" maxlength="20">
+            </div>
+            
+            <div id="imageUploadGroup" class="control-group" style="display: none;">
+                <label for="logoImage">Upload Logo Image:</label>
+                <input type="file" id="logoImage" accept="image/*">
+                
+                <div style="margin-top: 10px;">
+                    <label for="imageSize">Image Size:</label>
+                    <input type="range" id="imageSize" min="1" max="200" value="100">
+                </div>
+                
+                <div style="margin-top: 10px;">
+                    <label for="imageOpacity">Image Opacity:</label>
+                    <input type="range" id="imageOpacity" min="10" max="100" value="100">
+                </div>
+            </div>
+                
+            <button id="generateBtn">Update Logo</button>
+        </div>
+        
+        <div class="canvas-container">
+            <canvas id="logoCanvas" width="600" height="600"></canvas>
+        </div>
+        
+        <div class="footer">
+            <p>Take a screenshot to save your logo</p>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get elements
+            const canvas = document.getElementById('logoCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            // Text elements
+            const logoText = document.getElementById('logoText');
+            const textGroup = document.getElementById('textGroup');
+            
+            // Color elements
+            const logoColor = document.getElementById('logoColor');
+            const bgColor = document.getElementById('bgColor');
+            const bgColorGroup = document.getElementById('bgColorGroup');
+            
+            // Size elements
+            const fontSize = document.getElementById('fontSize');
+            const circleSize = document.getElementById('circleSize');
+            const decorationStyle = document.getElementById('decorationStyle');
+            const generateBtn = document.getElementById('generateBtn');
+            
+            // Background type elements
+            const solidBgType = document.getElementById('solidBgType');
+            const patternBgType = document.getElementById('patternBgType');
+            const imageBgType = document.getElementById('imageBgType');
+            const bgImageGroup = document.getElementById('bgImageGroup');
+            const patternGroup = document.getElementById('patternGroup');
+            const bgImage = document.getElementById('bgImage');
+            const bgOpacity = document.getElementById('bgOpacity');
+            const bgSize = document.getElementById('bgSize');
+            
+            // Pattern elements
+            const patternType = document.getElementById('patternType');
+            const patternColor = document.getElementById('patternColor');
+            const patternSize = document.getElementById('patternSize');
+            const patternOpacity = document.getElementById('patternOpacity');
+            const bgColorPattern = document.getElementById('bgColorPattern');
+            
+            // Logo type elements
+            const textType = document.getElementById('textType');
+            const imageType = document.getElementById('imageType');
+            const imageUploadGroup = document.getElementById('imageUploadGroup');
+            const logoImage = document.getElementById('logoImage');
+            const imageSize = document.getElementById('imageSize');
+            const imageOpacity = document.getElementById('imageOpacity');
+            
+            // Image storage
+            let uploadedLogoImage = null;
+            let uploadedBgImage = null;
+            
+            // Initialize canvas dimensions
+            function resizeCanvas() {
+                const containerWidth = document.querySelector('.canvas-container').clientWidth - 40; // account for padding
+                const scale = Math.min(1, containerWidth / 600);
+                
+                canvas.style.width = (600 * scale) + 'px';
+                canvas.style.height = (600 * scale) + 'px';
+            }
+            
+            // Toggle between text and image mode for logo
+            if (textType) {
+                textType.addEventListener('change', function() {
+                    if (this.checked) {
+                        textGroup.style.display = 'block';
+                        imageUploadGroup.style.display = 'none';
+                        drawLogo();
+                    }
+                });
+            }
+            
+            if (imageType) {
+                imageType.addEventListener('change', function() {
+                    if (this.checked) {
+                        textGroup.style.display = 'none';
+                        imageUploadGroup.style.display = 'block';
+                        drawLogo();
+                    }
+                });
+            }
+            
+            // Toggle between background types
+            if (solidBgType) {
+                solidBgType.addEventListener('change', function() {
+                    if (this.checked) {
+                        bgColorGroup.style.display = 'block';
+                        patternGroup.style.display = 'none';
+                        bgImageGroup.style.display = 'none';
+                        drawLogo();
+                    }
+                });
+            }
+            
+            if (patternBgType) {
+                patternBgType.addEventListener('change', function() {
+                    if (this.checked) {
+                        bgColorGroup.style.display = 'none';
+                        patternGroup.style.display = 'block';
+                        bgImageGroup.style.display = 'none';
+                        drawLogo();
+                    }
+                });
+            }
+            
+            if (imageBgType) {
+                imageBgType.addEventListener('change', function() {
+                    if (this.checked) {
+                        bgColorGroup.style.display = 'none';
+                        patternGroup.style.display = 'none';
+                        bgImageGroup.style.display = 'block';
+                        drawLogo();
+                    }
+                });
+            }
+            
+            // Handle logo image upload
+            if (logoImage) {
+                logoImage.addEventListener('change', function(e) {
+                    const file = e.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = function(event) {
+                            const img = new Image();
+                            img.onload = function() {
+                                uploadedLogoImage = img;
+                                drawLogo();
+                            };
+                            img.src = event.target.result;
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                });
+            }
+            
+            // Handle background image upload
+            if (bgImage) {
+                bgImage.addEventListener('change', function(e) {
+                    const file = e.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = function(event) {
+                            const img = new Image();
+                            img.onload = function() {
+                                uploadedBgImage = img;
+                                drawLogo();
+                            };
+                            img.src = event.target.result;
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                });
+            }
+            
+            // Draw background pattern functions
+            function drawPattern(patternType, color, bgColor, size, opacity) {
+                // Create an offscreen canvas for the pattern
+                const patternCanvas = document.createElement('canvas');
+                const patternCtx = patternCanvas.getContext('2d');
+                
+                // Set pattern size based on the pattern type
+                switch(patternType) {
+                    case 'grid':
+                        patternCanvas.width = size * 2;
+                        patternCanvas.height = size * 2;
+                        break;
+                    case 'dots':
+                        patternCanvas.width = size * 2;
+                        patternCanvas.height = size * 2;
+                        break;
+                    case 'diagonalLines':
+                        patternCanvas.width = size * 2;
+                        patternCanvas.height = size * 2;
+                        break;
+                    case 'chevron':
+                        patternCanvas.width = size * 4;
+                        patternCanvas.height = size * 4;
+                        break;
+                    case 'hexagons':
+                        patternCanvas.width = size * 6;
+                        patternCanvas.height = size * 6;
+                        break;
+                    default:
+                        patternCanvas.width = size * 2;
+                        patternCanvas.height = size * 2;
+                }
+                
+                // Fill pattern background
+                patternCtx.fillStyle = bgColor;
+                patternCtx.fillRect(0, 0, patternCanvas.width, patternCanvas.height);
+                
+                // Set pattern opacity
+                patternCtx.globalAlpha = opacity / 100;
+                patternCtx.strokeStyle = color;
+                patternCtx.fillStyle = color;
+                patternCtx.lineWidth = Math.max(1, size / 10);
+                
+                // Draw pattern based on type
+                switch(patternType) {
+                    case 'grid':
+                        // Draw grid lines
+                        patternCtx.beginPath();
+                        // Vertical line
+                        patternCtx.moveTo(size, 0);
+                        patternCtx.lineTo(size, patternCanvas.height);
+                        // Horizontal line
+                        patternCtx.moveTo(0, size);
+                        patternCtx.lineTo(patternCanvas.width, size);
+                        patternCtx.stroke();
+                        break;
+                        
+                    case 'dots':
+                        // Draw dot in each corner and center
+                        const dotSize = Math.max(1, size / 8);
+                        patternCtx.beginPath();
+                        patternCtx.arc(0, 0, dotSize, 0, Math.PI * 2);
+                        patternCtx.arc(size, 0, dotSize, 0, Math.PI * 2);
+                        patternCtx.arc(size * 2, 0, dotSize, 0, Math.PI * 2);
+                        patternCtx.arc(0, size, dotSize, 0, Math.PI * 2);
+                        patternCtx.arc(size, size, dotSize, 0, Math.PI * 2);
+                        patternCtx.arc(size * 2, size, dotSize, 0, Math.PI * 2);
+                        patternCtx.arc(0, size * 2, dotSize, 0, Math.PI * 2);
+                        patternCtx.arc(size, size * 2, dotSize, 0, Math.PI * 2);
+                        patternCtx.arc(size * 2, size * 2, dotSize, 0, Math.PI * 2);
+                        patternCtx.fill();
+                        break;
+                        
+                    case 'diagonalLines':
+                        // Draw diagonal lines
+                        patternCtx.beginPath();
+                        // First diagonal
+                        patternCtx.moveTo(0, 0);
+                        patternCtx.lineTo(size * 2, size * 2);
+                        // Second diagonal (shifted)
+                        patternCtx.moveTo(size, 0);
+                        patternCtx.lineTo(size * 2, size);
+                        patternCtx.moveTo(0, size);
+                        patternCtx.lineTo(size, size * 2);
+                        patternCtx.stroke();
+                        break;
+                        
+                    case 'chevron':
+                        // Draw chevron pattern
+                        const chevronHeight = size * 2;
+                        patternCtx.beginPath();
+                        
+                        // First set of chevrons
+                        patternCtx.moveTo(0, size);
+                        patternCtx.lineTo(size, 0);
+                        patternCtx.lineTo(size * 2, size);
+                        patternCtx.lineTo(size * 3, 0);
+                        patternCtx.lineTo(size * 4, size);
+                        
+                        // Second set of chevrons
+                        patternCtx.moveTo(0, size * 3);
+                        patternCtx.lineTo(size, size * 2);
+                        patternCtx.lineTo(size * 2, size * 3);
+                        patternCtx.lineTo(size * 3, size * 2);
+                        patternCtx.lineTo(size * 4, size * 3);
+                        
+                        patternCtx.stroke();
+                        break;
+                        
+                    case 'hexagons':
+                        // Draw hexagon pattern
+                        const hexRadius = size * 1.5;
+                        const h = hexRadius * Math.sin(Math.PI / 3);
+                        
+                        function drawHexagon(x, y, r) {
+                            patternCtx.beginPath();
+                            for (let i = 0; i < 6; i++) {
+                                const angle = (i * Math.PI / 3);
+                                const hx = x + r * Math.cos(angle);
+                                const hy = y + r * Math.sin(angle);
+                                
+                                if (i === 0) {
+                                    patternCtx.moveTo(hx, hy);
+                                } else {
+                                    patternCtx.lineTo(hx, hy);
+                                }
+                            }
+                            patternCtx.closePath();
+                            patternCtx.stroke();
+                        }
+                        
+                        drawHexagon(size * 3, size * 3, hexRadius);
+                        drawHexagon(size * 3 - 2 * hexRadius * 0.75, size * 3, hexRadius);
+                        drawHexagon(size * 3 + 2 * hexRadius * 0.75, size * 3, hexRadius);
+                        drawHexagon(size * 3 - hexRadius * 0.75, size * 3 - h, hexRadius);
+                        drawHexagon(size * 3 + hexRadius * 0.75, size * 3 - h, hexRadius);
+                        drawHexagon(size * 3 - hexRadius * 0.75, size * 3 + h, hexRadius);
+                        drawHexagon(size * 3 + hexRadius * 0.75, size * 3 + h, hexRadius);
+                        break;
+                }
+                
+                // Create and return the pattern
+                return ctx.createPattern(patternCanvas, 'repeat');
+            }
+            
+            // Draw logo function
+            function drawLogo() {
+                // Get values
+                const text = logoText ? logoText.value || 'PRODUCT' : 'PRODUCT';
+                const color = logoColor ? logoColor.value : '#D4AF37';
+                const colorBg = bgColor ? bgColor.value : '#121212';
+                const fontSizeVal = fontSize ? fontSize.value : 36;
+                const circleSizeVal = circleSize ? circleSize.value : 250;
+                const decorStyle = decorationStyle ? decorationStyle.value : 'luxury';
+                const logoImageSizeVal = imageSize ? imageSize.value : 100;
+                const logoImageOpacityVal = imageOpacity ? imageOpacity.value / 100 : 1;
+                const bgImageSizeVal = bgSize ? bgSize.value / 100 : 1;
+                const bgImageOpacityVal = bgOpacity ? bgOpacity.value / 100 : 1;
+                
+                // Get pattern values
+                const selectedPatternType = patternType ? patternType.value : 'grid';
+                const selectedPatternColor = patternColor ? patternColor.value : '#333333';
+                const selectedPatternSize = patternSize ? patternSize.value : 20;
+                const selectedPatternOpacity = patternOpacity ? patternOpacity.value : 50;
+                const selectedBgColorPattern = bgColorPattern ? bgColorPattern.value : '#121212';
+                
+                // Clear canvas
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                // Draw background based on selected type
+                if (solidBgType && solidBgType.checked) {
+                    // Solid background color
+                    ctx.fillStyle = colorBg;
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                } else if (patternBgType && patternBgType.checked) {
+                    // Pattern background
+                    // First fill with background color
+                    ctx.fillStyle = selectedBgColorPattern;
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    
+                    // Then draw the pattern
+                    const pattern = drawPattern(
+                        selectedPatternType,
+                        selectedPatternColor,
+                        selectedBgColorPattern,
+                        parseInt(selectedPatternSize),
+                        parseInt(selectedPatternOpacity)
+                    );
+                    
+                    ctx.fillStyle = pattern;
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                } else if (imageBgType && imageBgType.checked && uploadedBgImage) {
+                    // Background image
+                    ctx.save();
+                    ctx.globalAlpha = bgImageOpacityVal;
+                    
+                    // Calculate dimensions to cover the canvas while maintaining aspect ratio
+                    const bgImgWidth = uploadedBgImage.width;
+                    const bgImgHeight = uploadedBgImage.height;
+                    const canvasRatio = canvas.width / canvas.height;
+                    const imgRatio = bgImgWidth / bgImgHeight;
+                    
+                    let drawWidth, drawHeight, offsetX = 0, offsetY = 0;
+                    
+                    if (imgRatio > canvasRatio) {
+                        // Image is wider than canvas
+                        drawHeight = canvas.height * bgImageSizeVal;
+                        drawWidth = drawHeight * imgRatio;
+                        offsetX = (canvas.width - drawWidth) / 2;
+                    } else {
+                        // Image is taller than canvas
+                        drawWidth = canvas.width * bgImageSizeVal;
+                        drawHeight = drawWidth / imgRatio;
+                        offsetY = (canvas.height - drawHeight) / 2;
+                    }
+                    
+                    ctx.drawImage(uploadedBgImage, offsetX, offsetY, drawWidth, drawHeight);
+                    ctx.restore();
+                } else {
+                    // Default background if no option is selected
+                    ctx.fillStyle = colorBg;
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                }
+                
+                // Set center point
+                const centerX = canvas.width / 2;
+                const centerY = canvas.height / 2;
+                
+                // Draw outer circle
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, circleSizeVal, 0, Math.PI * 2);
+                ctx.strokeStyle = color;
+                ctx.lineWidth = 2;
+                ctx.stroke();
+                
+                // Draw inner circle (slightly smaller)
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, circleSizeVal - 10, 0, Math.PI * 2);
+                ctx.strokeStyle = color;
+                ctx.lineWidth = 1;
+                ctx.stroke();
+                
+                // Draw dot at top
+                ctx.beginPath();
+                ctx.arc(centerX, centerY - circleSizeVal, 4, 0, Math.PI * 2);
+                ctx.fillStyle = color;
+                ctx.fill();
+                
+                // Determine if we're using text or image for the logo content
+                if (textType && textType.checked) {
+                    // Set font for main text
+                    ctx.font = `bold ${fontSizeVal}px 'Arial', sans-serif`;
+                    ctx.fillStyle = color;
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    
+                    // Draw main text
+                    ctx.fillText(text, centerX, centerY);
+                    
+                    // Draw horizontal line below text
+                    const lineWidth = ctx.measureText(text).width * 0.8;
+                    ctx.beginPath();
+                    ctx.moveTo(centerX - lineWidth / 2, centerY + fontSizeVal / 2 + 10);
+                    ctx.lineTo(centerX + lineWidth / 2, centerY + fontSizeVal / 2 + 10);
+                    ctx.strokeStyle = color;
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
+                    
+                    // Add small dots to the horizontal line
+                    ctx.beginPath();
+                    ctx.arc(centerX, centerY + fontSizeVal / 2 + 10, 3, 0, Math.PI * 2);
+                    ctx.fillStyle = color;
+                    ctx.fill();
+                } else if (imageType && imageType.checked && uploadedLogoImage) {
+                    // Calculate image size based on slider
+                    const imgWidth = uploadedLogoImage.width * (logoImageSizeVal / 100);
+                    const imgHeight = uploadedLogoImage.height * (logoImageSizeVal / 100);
+                    
+                    // Set opacity for logo image
+                    ctx.save();
+                    ctx.globalAlpha = logoImageOpacityVal;
+                    
+                    // Draw image centered
+                    ctx.drawImage(
+                        uploadedLogoImage, 
+                        centerX - imgWidth / 2, 
+                        centerY - imgHeight / 2, 
+                        imgWidth, 
+                        imgHeight
+                    );
+                    
+                    ctx.restore();
+                    
+                    // Draw horizontal line below image
+                    const lineWidth = Math.min(imgWidth * 1.2, circleSizeVal * 1.5);
+                    ctx.beginPath();
+                    ctx.moveTo(centerX - lineWidth / 2, centerY + imgHeight / 2 + 10);
+                    ctx.lineTo(centerX + lineWidth / 2, centerY + imgHeight / 2 + 10);
+                    ctx.strokeStyle = color;
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
+                    
+                    // Add small dots to the horizontal line
+                    ctx.beginPath();
+                    ctx.arc(centerX, centerY + imgHeight / 2 + 10, 3, 0, Math.PI * 2);
+                    ctx.fillStyle = color;
+                    ctx.fill();
+                }
+                
+                // Draw decorative elements based on selected style
+                drawDecoration(centerX, centerY, circleSizeVal, color, decorStyle);
+            }
+            
+            function drawDecoration(centerX, centerY, size, color, style) {
+                switch(style) {
+                    case 'luxury':
+                        // Enhanced leaves with more detail
+                        drawLuxuryLeaves(centerX, centerY, size, color);
+                        // Ornate scrolls at top
+                        drawOrnateScrolls(centerX, centerY - size * 0.4, size * 0.35, color, 'top');
+                        break;
+                        
+                    case 'ornate':
+                        // Detailed ornate scrolls at top and bottom
+                        drawOrnateScrolls(centerX, centerY - size * 0.4, size * 0.35, color, 'top');
+                        drawOrnateScrolls(centerX, centerY + size * 0.6, size * 0.35, color, 'bottom');
+                        // Add some flourishes
+                        drawFlourishes(centerX, centerY, size, color);
+                        break;
+                        
+                    case 'floral':
+                        // Floral pattern around the circle
+                        for (let i = 0; i < 8; i++) {
+                            const angle = (i / 8) * Math.PI * 2;
+                            const x = centerX + Math.cos(angle) * (size - 30);
+                            const y = centerY + Math.sin(angle) * (size - 30);
+                            drawFlower(x, y, size * 0.1, color);
+                        }
+                        // Add vine elements
+                        drawVines(centerX, centerY, size, color);
+                        break;
+                        
+                    case 'geometric':
+                        // Geometric patterns around the circle
+                        for (let i = 0; i < 16; i++) {
+                            const angle = (i / 16) * Math.PI * 2;
+                            const distance = size - 20;
+                            const x = centerX + Math.cos(angle) * distance;
+                            const y = centerY + Math.sin(angle) * distance;
+                            
+                            if (i % 2 === 0) {
+                                drawDiamond(x, y, 10, color);
+                            } else {
+                                drawTriangle(x, y, 8, color);
+                            }
+                        }
+                        // Add connecting lines
+                        drawGeometricLines(centerX, centerY, size, color);
+                        break;
+                        
+                    case 'elegant':
+                        // Minimalist elegant pattern
+                        drawElegantPattern(centerX, centerY, size, color);
+                        break;
+                }
+            }
+            
+            function drawLuxuryLeaves(centerX, centerY, size, color) {
+                // Right leaf cluster
+                ctx.save();
+                ctx.translate(centerX + size * 0.5, centerY + size * 0.8);
+                ctx.rotate(Math.PI / 5);
+                
+                // Main leaf
+                ctx.beginPath();
+                ctx.moveTo(0, 0);
+                ctx.bezierCurveTo(20, -25, 50, -35, 70, -5);
+                ctx.bezierCurveTo(50, 5, 20, 5, 0, 0);
+                ctx.strokeStyle = color;
+                ctx.lineWidth = 1.5;
+                ctx.stroke();
+                
+                // Leaf veins - more detailed
+                ctx.beginPath();
+                ctx.moveTo(0, 0);
+                ctx.bezierCurveTo(20, -15, 40, -20, 70, -5);
+                ctx.strokeStyle = color;
+                ctx.lineWidth = 0.5;
+                ctx.stroke();
+                
+                // Additional veins
+                for (let i = 1; i <= 3; i++) {
+                    ctx.beginPath();
+                    ctx.moveTo(i * 15, -i * 5);
+                    ctx.bezierCurveTo(i * 20, -i * 10, i * 25, -i * 15, i * 30, -i * 3);
+                    ctx.strokeStyle = color;
+                    ctx.lineWidth = 0.3;
+                    ctx.stroke();
+                }
+                
+                // Second leaf
+                ctx.beginPath();
+                ctx.moveTo(10, 10);
+                ctx.bezierCurveTo(30, -5, 50, -15, 80, 15);
+                ctx.bezierCurveTo(60, 25, 30, 25, 10, 10);
+                ctx.strokeStyle = color;
+                ctx.lineWidth = 1.5;
+                ctx.stroke();
+                
+                // Second leaf veins
+                ctx.beginPath();
+                ctx.moveTo(10, 10);
+                ctx.bezierCurveTo(30, 0, 55, 0, 80, 15);
+                ctx.strokeStyle = color;
+                ctx.lineWidth = 0.5;
+                ctx.stroke();
+                
+                ctx.restore();
+                
+                // Left leaf cluster
+                ctx.save();
+                ctx.translate(centerX - size * 0.5, centerY + size * 0.8);
+                ctx.rotate(-Math.PI / 5);
+                
+                // Main leaf
+                ctx.beginPath();
+                ctx.moveTo(0, 0);
+                ctx.bezierCurveTo(20, -25, 50, -35, 70, -5);
+                ctx.bezierCurveTo(50, 5, 20, 5, 0, 0);
+                ctx.strokeStyle = color;
+                ctx.lineWidth = 1.5;
+                ctx.stroke();
+                
+                // Leaf veins - more detailed
+                ctx.beginPath();
+                ctx.moveTo(0, 0);
+                ctx.bezierCurveTo(20, -15, 40, -20, 70, -5);
+                ctx.strokeStyle = color;
+                ctx.lineWidth = 0.5;
+                ctx.stroke();
+                
+                // Additional veins
+                for (let i = 1; i <= 3; i++) {
+                    ctx.beginPath();
+                    ctx.moveTo(i * 15, -i * 5);
+                    ctx.bezierCurveTo(i * 20, -i * 10, i * 25, -i * 15, i * 30, -i * 3);
+                    ctx.strokeStyle = color;
+                    ctx.lineWidth = 0.3;
+                    ctx.stroke();
+                }
+                
+                // Second leaf
+                ctx.beginPath();
+                ctx.moveTo(10, 10);
+                ctx.bezierCurveTo(30, -5, 50, -15, 80, 15);
+                ctx.bezierCurveTo(60, 25, 30, 25, 10, 10);
+                ctx.strokeStyle = color;
+                ctx.lineWidth = 1.5;
+                ctx.stroke();
+                
+                // Second leaf veins
+                ctx.beginPath();
+                ctx.moveTo(10, 10);
+                ctx.bezierCurveTo(30, 0, 55, 0, 80, 15);
+                ctx.strokeStyle = color;
+                ctx.lineWidth = 0.5;
+                ctx.stroke();
+                
+                ctx.restore();
+                
+                // Small berries or details
+                for (let i = 0; i < 2; i++) {
+                    const xOffset = i === 0 ? size * 0.3 : -size * 0.3;
+                    
+                    for (let j = 0; j < 3; j++) {
+                        ctx.beginPath();
+                        ctx.arc(
+                            centerX + xOffset + (j * 8) * (i === 0 ? 1 : -1), 
+                            centerY + size * 0.9 - j * 5, 
+                            2.5, 
+                            0, 
+                            Math.PI * 2
+                        );
+                        ctx.fillStyle = color;
+                        ctx.fill();
+                    }
+                }
+            }
+            
+            function drawOrnateScrolls(centerX, centerY, size, color, position) {
+                const direction = position === 'top' ? -1 : 1;
+                
+                // Left scroll - more ornate
+                ctx.beginPath();
+                ctx.moveTo(centerX - size * 0.5, centerY);
+                ctx.bezierCurveTo(
+                    centerX - size * 0.8, centerY + (direction * size * 0.2),
+                    centerX - size * 1.1, centerY + (direction * size * 0.4),
+                    centerX - size * 0.9, centerY + (direction * size * 0.6)
+                );
+                ctx.bezierCurveTo(
+                    centerX - size * 0.7, centerY + (direction * size * 0.7),
+                    centerX - size * 0.6, centerY + (direction * size * 0.6),
+                    centerX - size * 0.7, centerY + (direction * size * 0.4)
+                );
+                ctx.bezierCurveTo(
+                    centerX - size * 0.8, centerY + (direction * size * 0.2),
+                    centerX - size * 0.3, centerY + (direction * size * 0.1),
+                    centerX - size * 0.1, centerY
+                );
+                ctx.strokeStyle = color;
+                ctx.lineWidth = 1.5;
+                ctx.stroke();
+                
+                // Inner details for left scroll
+                ctx.beginPath();
+                ctx.moveTo(centerX - size * 0.5, centerY + (direction * size * 0.1));
+                ctx.bezierCurveTo(
+                    centerX - size * 0.7, centerY + (direction * size * 0.3),
+                    centerX - size * 0.9, centerY + (direction * size * 0.5),
+                    centerX - size * 0.8, centerY + (direction * size * 0.55)
+                );
+                ctx.strokeStyle = color;
+                ctx.lineWidth = 0.7;
+                ctx.stroke();
+                
+                // Right scroll - more ornate
+                ctx.beginPath();
+                ctx.moveTo(centerX + size * 0.5, centerY);
+                ctx.bezierCurveTo(
+                    centerX + size * 0.8, centerY + (direction * size * 0.2),
+                    centerX + size * 1.1, centerY + (direction * size * 0.4),
+                    centerX + size * 0.9, centerY + (direction * size * 0.6)
+                );
+                ctx.bezierCurveTo(
+                    centerX + size * 0.7, centerY + (direction * size * 0.7),
+                    centerX + size * 0.6, centerY + (direction * size * 0.6),
+                    centerX + size * 0.7, centerY + (direction * size * 0.4)
+                );
+                ctx.bezierCurveTo(
+                    centerX + size * 0.8, centerY + (direction * size * 0.2),
+                    centerX + size * 0.3, centerY + (direction * size * 0.1),
+                    centerX + size * 0.1, centerY
+                );
+                ctx.strokeStyle = color;
+                ctx.lineWidth = 1.5;
+                ctx.stroke();
+                
+                // Inner details for right scroll
+                ctx.beginPath();
+                ctx.moveTo(centerX + size * 0.5, centerY + (direction * size * 0.1));
+                ctx.bezierCurveTo(
+                    centerX + size * 0.7, centerY + (direction * size * 0.3),
+                    centerX + size * 0.9, centerY + (direction * size * 0.5),
+                    centerX + size * 0.8, centerY + (direction * size * 0.55)
+                );
+                ctx.strokeStyle = color;
+                ctx.lineWidth = 0.7;
+                ctx.stroke();
+                
+                // Add small decorative dots
+                for (let i = -1; i <= 1; i += 2) {
+                    for (let j = 0; j < 3; j++) {
+                        ctx.beginPath();
+                        ctx.arc(
+                            centerX + (i * size * (0.8 - j * 0.2)), 
+                            centerY + (direction * size * (0.4 + j * 0.1)), 
+                            2, 
+                            0, 
+                            Math.PI * 2
+                        );
+                        ctx.fillStyle = color;
+                        ctx.fill();
+                    }
+                }
+            }
+            
+            function drawFlourishes(centerX, centerY, size, color) {
+                // Add small flourishes around the circle
+                for (let i = 0; i < 8; i++) {
+                    if (i % 2 === 0) continue; // Skip every other position
+                    
+                    const angle = (i / 8) * Math.PI * 2;
+                    const x = centerX + Math.cos(angle) * (size - 5);
+                    const y = centerY + Math.sin(angle) * (size - 5);
+                    
+                    // Draw flourish
+                    ctx.save();
+                    ctx.translate(x, y);
+                    ctx.rotate(angle + Math.PI / 2);
+                    
+                    // Small curls
+                    ctx.beginPath();
+                    ctx.moveTo(-5, 0);
+                    ctx.bezierCurveTo(-10, -5, -15, -5, -15, 0);
+                    ctx.bezierCurveTo(-15, 5, -10, 5, -8, 2);
+                    ctx.strokeStyle = color;
+                    ctx.lineWidth = 1;
+                    ctx.stroke();
+                    
+                    ctx.beginPath();
+                    ctx.moveTo(5, 0);
+                    ctx.bezierCurveTo(10, -5, 15, -5, 15, 0);
+                    ctx.bezierCurveTo(15, 5, 10, 5, 8, 2);
+                    ctx.strokeStyle = color;
+                    ctx.lineWidth = 1;
+                    ctx.stroke();
+                    
+                    ctx.restore();
+                }
+            }
+            
+            function drawFlower(x, y, size, color) {
+                ctx.save();
+                ctx.translate(x, y);
+                
+                // Draw petals
+                for (let i = 0; i < 8; i++) {
+                    const angle = (i / 8) * Math.PI * 2;
+                    ctx.save();
+                    ctx.rotate(angle);
+                    
+                    ctx.beginPath();
+                    ctx.moveTo(0, 0);
+                    ctx.bezierCurveTo(size * 0.5, size * 0.5, size, size * 0.5, size, 0);
+                    ctx.bezierCurveTo(size, -size * 0.5, size * 0.5, -size * 0.5, 0, 0);
+                    ctx.fillStyle = color;
+                    ctx.globalAlpha = 0.3; // Transparent petals
+                    ctx.fill();
+                    ctx.globalAlpha = 1;
+                    ctx.strokeStyle = color;
+                    ctx.lineWidth = 0.5;
+                    ctx.stroke();
+                    
+                    ctx.restore();
+                }
+                
+                // Draw center
+                ctx.beginPath();
+                ctx.arc(0, 0, size * 0.3, 0, Math.PI * 2);
+                ctx.fillStyle = color;
+                ctx.fill();
+                
+                ctx.restore();
+            }
+            
+            function drawVines(centerX, centerY, size, color) {
+                // Draw vine at bottom
+                ctx.beginPath();
+                ctx.moveTo(centerX - size * 0.3, centerY + size * 0.8);
+                
+                // Curving vine
+                ctx.bezierCurveTo(
+                    centerX - size * 0.2, centerY + size * 0.85,
+                    centerX - size * 0.1, centerY + size * 0.9,
+                    centerX, centerY + size * 0.85
+                );
+                ctx.bezierCurveTo(
+                    centerX + size * 0.1, centerY + size * 0.9,
+                    centerX + size * 0.2, centerY + size * 0.85,
+                    centerX + size * 0.3, centerY + size * 0.8
+                );
+                
+                ctx.strokeStyle = color;
+                ctx.lineWidth = 1.5;
+                ctx.stroke();
+                
+                // Add small leaves to the vine
+                const positions = [0.25, 0.5, 0.75];
+                
+                positions.forEach(pos => {
+                    const x = centerX - size * 0.3 + pos * size * 0.6;
+                    const y = centerY + size * 0.85;
+                    const direction = pos < 0.5 ? -1 : 1;
+                    
+                    ctx.save();
+                    ctx.translate(x, y);
+                    
+                    // Small leaf
+                    ctx.beginPath();
+                    ctx.moveTo(0, 0);
+                    ctx.bezierCurveTo(
+                        5 * direction, -7,
+                        10 * direction, -10,
+                        15 * direction, -5
+                    );
+                    ctx.bezierCurveTo(
+                        10 * direction, 0,
+                        5 * direction, -2,
+                        0, 0
+                    );
+                    ctx.fillStyle = color;
+                    ctx.globalAlpha = 0.3;
+                    ctx.fill();
+                    ctx.globalAlpha = 1;
+                    ctx.strokeStyle = color;
+                    ctx.lineWidth = 0.7;
+                    ctx.stroke();
+                    
+                    ctx.restore();
+                });
+            }
+            
+            function drawDiamond(x, y, size, color) {
+                ctx.save();
+                ctx.translate(x, y);
+                
+                ctx.beginPath();
+                ctx.moveTo(0, -size);
+                ctx.lineTo(size, 0);
+                ctx.lineTo(0, size);
+                ctx.lineTo(-size, 0);
+                ctx.closePath();
+                
+                ctx.strokeStyle = color;
+                ctx.lineWidth = 1;
+                ctx.stroke();
+                
+                ctx.restore();
+            }
+            
+            function drawTriangle(x, y, size, color) {
+                ctx.save();
+                ctx.translate(x, y);
+                
+                ctx.beginPath();
+                ctx.moveTo(0, -size);
+                ctx.lineTo(size, size * 0.866); // 30 degrees
+                ctx.lineTo(-size, size * 0.866);
+                ctx.closePath();
+                
+                ctx.strokeStyle = color;
+                ctx.lineWidth = 1;
+                ctx.stroke();
+                
+                ctx.restore();
+            }
+            
+            function drawGeometricLines(centerX, centerY, size, color) {
+                // Draw connecting geometric lines
+                ctx.beginPath();
+                
+                for (let i = 0; i < 8; i++) {
+                    const angle1 = (i / 8) * Math.PI * 2;
+                    const angle2 = ((i + 2) / 8) * Math.PI * 2;
+                    
+                    const x1 = centerX + Math.cos(angle1) * (size - 25);
+                    const y1 = centerY + Math.sin(angle1) * (size - 25);
+                    const x2 = centerX + Math.cos(angle2) * (size - 25);
+                    const y2 = centerY + Math.sin(angle2) * (size - 25);
+                    
+                    if (i % 2 === 0) {
+                        ctx.moveTo(x1, y1);
+                        ctx.lineTo(x2, y2);
+                    }
+                }
+                
+                ctx.strokeStyle = color;
+                ctx.globalAlpha = 0.3;
+                ctx.lineWidth = 0.8;
+                ctx.stroke();
+                ctx.globalAlpha = 1;
+            }
+            
+            function drawElegantPattern(centerX, centerY, size, color) {
+                // Draw elegant minimal pattern
+                
+                // Decorative dots around the circle
+                for (let i = 0; i < 24; i++) {
+                    if (i % 3 === 0) {
+                        const angle = (i / 24) * Math.PI * 2;
+                        const x = centerX + Math.cos(angle) * (size - 5);
+                        const y = centerY + Math.sin(angle) * (size - 5);
+                        
+                        const dotSize = i % 6 === 0 ? 3 : 2;
+                        
+                        ctx.beginPath();
+                        ctx.arc(x, y, dotSize, 0, Math.PI * 2);
+                        ctx.fillStyle = color;
+                        ctx.fill();
+                    }
+                }
+                
+                // Elegant curved lines
+                for (let i = 0; i < 4; i++) {
+                    const angle = (i / 4) * Math.PI * 2;
+                    const x1 = centerX + Math.cos(angle) * (size - 40);
+                    const y1 = centerY + Math.sin(angle) * (size - 40);
+                    
+                    const angleOffset = 0.2; // Slight angle offset
+                    const x2 = centerX + Math.cos(angle + angleOffset) * (size - 20);
+                    const y2 = centerY + Math.sin(angle + angleOffset) * (size - 20);
+                    
+                    ctx.beginPath();
+                    ctx.moveTo(x1, y1);
+                    ctx.quadraticCurveTo(
+                        centerX + Math.cos(angle + angleOffset/2) * (size - 10),
+                        centerY + Math.sin(angle + angleOffset/2) * (size - 10),
+                        x2, y2
+                    );
+                    ctx.strokeStyle = color;
+                    ctx.lineWidth = 1;
+                    ctx.stroke();
+                }
+                
+                // Simple flourish at top and bottom
+                [-1, 1].forEach(dir => {
+                    ctx.beginPath();
+                    ctx.moveTo(centerX - 30, centerY + (dir * size * 0.6));
+                    ctx.bezierCurveTo(
+                        centerX - 15, centerY + (dir * size * 0.65),
+                        centerX + 15, centerY + (dir * size * 0.65),
+                        centerX + 30, centerY + (dir * size * 0.6)
+                    );
+                    ctx.strokeStyle = color;
+                    ctx.lineWidth = 1.5;
+                    ctx.stroke();
+                    
+                    // Add small dot
+                    ctx.beginPath();
+                    ctx.arc(centerX, centerY + (dir * size * 0.65), 2, 0, Math.PI * 2);
+                    ctx.fillStyle = color;
+                    ctx.fill();
+                });
+            }
+            
+            // Add event listeners for all inputs
+            const inputs = [
+                logoText, logoColor, bgColor, fontSize, circleSize, decorationStyle, 
+                imageSize, bgOpacity, bgSize, imageOpacity,
+                patternType, patternColor, patternSize, patternOpacity, bgColorPattern
+            ];
+            
+            inputs.forEach(input => {
+                if (input) {
+                    input.addEventListener('input', drawLogo);
+                }
+            });
+            
+            // Add event listeners for buttons
+            if (generateBtn) {
+                generateBtn.addEventListener('click', drawLogo);
+            }
+            
+            // Call resize and draw the initial logo
+            resizeCanvas();
+            drawLogo();
+            
+            // Window resize handler
+            window.addEventListener('resize', resizeCanvas);
+        });
+    </script>
+</body>
+</html>
