@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luxury Logo Generator</title>
+    <style>
+        :root {
+            --primary-color: #d4af37;
+            --bg-color: #1a1a1a;
+            --text-color: #d4af37;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #222;
+            color: #fff;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+        
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            max-width: 1200px;
+            gap: 20px;
+            justify-content: center;
+        }
+        
+        .controls {
+            background-color: #333;
+            padding: 20px;
+            border-radius: 10px;
+            width: 300px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+        
+        .preview-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .logo-preview {
+            width: 500px;
+            height: 500px;
+            background-color: var(--bg-color);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+        }
+        
+        .logo-inner {
+            width: 90%;
+            height: 90%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .logo-circle {
+            position: absolute;
+            border: 2px solid var(--primary-color);
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            box-sizing: border-box;
+        }
+        
+        .logo-text {
+            color: var(--text-color);
+            font-size: 48px;
+            font-weight: bold;
+            text-align: center;
+            text-transform: uppercase;
+            margin: 0;
+            position: relative;
+            z-index: 10;
+            letter-spacing: 2px;
+            font-family: 'Times New Roman', Times, serif;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        .logo-divider {
+            width: 80px;
+            height: 2px;
+            background-color: var(--primary-color);
+            margin: 10px 0;
+        }
+        
+        .control-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #ddd;
+        }
+        
+        input, select, button {
+            width: 100%;
+            padding: 8px;
+            border-radius: 4px;
+            border: 1px solid #555;
+            background-color: #444;
+            color: #fff;
+            margin-bottom: 5px;
+        }
+        
+        button {
+            background-color: var(--primary-color);
+            color: #111;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 10px;
+            transition: all 0.2s;
+        }
+        
+        button:hover {
+            background-color: #e5c04e;
+        }
+        
+        .decoration-top {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 20px;
+            display: flex;
+            justify-content: center;
+        }
+        
+        .decoration-bottom {
+            position: absolute;
+            bottom: 40px;
+            width: 120px;
+            height: 40px;
+        }
+        
+        .logo-flourish {
+            color: var(--primary-color);
+            font-size: 24px;
+        }
+        
+        .ornament {
+            width: 100%;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+        
+        .leaf-container {
+            position: absolute;
+            bottom: 20px;
+            width: 140px;
+            height: 60px;
+            display: flex;
+            justify-content: center;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .pattern {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0.1;
+            z-index: 1;
+        }
+        
+        .upload-preview {
+            max-width: 100px;
+            max-height: 100px;
+            margin-top: 10px;
+            border: 1px solid #555;
+            display: none;
+        }
+
+        .color-preview {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            vertical-align: middle;
+            margin-left: 5px;
+            border: 1px solid #555;
+        }
+
+        footer {
+            margin-top: 20px;
+            font-size: 12px;
+            color: #666;
+        }
+
+        .user-image {
+            max-width: 80%;
+            max-height: 120px;
+            position: relative;
+            z-index: 5;
+        }
+
+        .logo-subtitle {
+            color: var(--text-color);
+            font-size: 16px;
+            margin-top: 5px;
+            font-family: 'Times New Roman', Times, serif;
+            opacity: 0.9;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Luxury Logo Generator</h1>
+    
+    <div class="container">
+        <div class="controls">
+            <div class="control-group">
+                <label for="logoText">Logo Text</label>
+                <input type="text" id="logoText" value="PRODUCT" placeholder="Enter logo text">
+            </div>
+            
+            <div class="control-group">
+                <label for="logoSubtitle">Subtitle (Optional)</label>
+                <input type="text" id="logoSubtitle" placeholder="Enter subtitle">
+            </div>
+            
+            <div class="control-group">
+                <label for="bgColor">Background Color</label>
+                <input type="color" id="bgColor" value="#1a1a1a">
+                <span class="color-preview" id="bgColorPreview" style="background-color: #1a1a1a;"></span>
+            </div>
+            
+            <div class="control-group">
+                <label for="textColor">Text & Elements Color</label>
+                <input type="color" id="textColor" value="#d4af37">
+                <span class="color-preview" id="textColorPreview" style="background-color: #d4af37;"></span>
+            </div>
+            
+            <div class="control-group">
+                <label for="patternSelect">Background Pattern</label>
+                <select id="patternSelect">
+                    <option value="none">None</option>
+                    <option value="dots">Dots</option>
+                    <option value="lines">Lines</option>
+                    <option value="grid">Grid</option>
+                    <option value="diamonds">Diamonds</option>
+                </select>
+            </div>
+            
+            <div class="control-group">
+                <label for="decorationStyle">Decoration Style</label>
+                <select id="decorationStyle">
+                    <option value="leaves">Leaves</option>
+                    <option value="flourish">Flourish</option>
+                    <option value="minimal">Minimal</option>
+                    <option value="none">None</option>
+                </select>
+            </div>
+            
+            <div class="control-group">
+                <label for="logoImage">Custom Logo Image (Optional)</label>
+                <input type="file" id="logoImage" accept="image/*">
+                <img id="logoImagePreview" class="upload-preview">
+            </div>
+            
+            <div class="control-group">
+                <label for="bgImage">Background Image (Optional)</label>
+                <input type="file" id="bgImage" accept="image/*">
+                <img id="bgImagePreview" class="upload-preview">
+            </div>
+            
+            <button id="downloadBtn">Download Logo (Screenshot)</button>
+            <button id="resetBtn">Reset to Default</button>
+        </div>
+        
+        <div class="preview-container">
+            <div class="logo-preview" id="logoPreview">
+                <div class="pattern" id="patternElement"></div>
+                <div class="logo-inner">
+                    <div class="logo-circle"></div>
+                    <div class="decoration-top">
+                        <div class="logo-flourish">✦</div>
+                    </div>
+                    <div class="ornament">
+                        <span class="logo-flourish">❦</span>
+                    </div>
+                    <h2 class="logo-text" id="logoTextElement">PRODUCT</h2>
+                    <div class="logo-subtitle" id="logoSubtitleElement"></div>
+                    <div class="logo-divider"></div>
+                    <img id="userImage" class="user-image hidden">
+                    <div class="leaf-container" id="leafContainer">
+                        <svg width="140" height="60" viewBox="0 0 140 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M70 10 C 40 10, 20 30, 20 40 C 30 35, 60 30, 70 40 M70 10 C 100 10, 120 30, 120 40 C 110 35, 80 30, 70 40" stroke="var(--primary-color)" stroke-width="1.5" fill="none" />
+                            <path d="M55 35 C 60 25, 65 25, 70 35 M85 35 C 80 25, 75 25, 70 35" stroke="var(--primary-color)" stroke-width="1" fill="none" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+            <p>Take a screenshot of the logo above to save it</p>
+        </div>
+    </div>
+    
+    <footer>
+        Created with Logo Generator | Use screenshot to save your logo
+    </footer>
+
+    <script>
+        // DOM Elements
+        const logoText = document.getElementById('logoText');
+        const logoSubtitle = document.getElementById('logoSubtitle');
+        const bgColor = document.getElementById('bgColor');
+        const textColor = document.getElementById('textColor');
+        const patternSelect = document.getElementById('patternSelect');
+        const decorationStyle = document.getElementById('decorationStyle');
+        const logoImage = document.getElementById('logoImage');
+        const bgImage = document.getElementById('bgImage');
+        const resetBtn = document.getElementById('resetBtn');
+        const downloadBtn = document.getElementById('downloadBtn');
+        
+        // Preview Elements
+        const logoPreview = document.getElementById('logoPreview');
+        const logoTextElement = document.getElementById('logoTextElement');
+        const logoSubtitleElement = document.getElementById('logoSubtitleElement');
+        const patternElement = document.getElementById('patternElement');
+        const userImage = document.getElementById('userImage');
+        const leafContainer = document.getElementById('leafContainer');
+        const logoImagePreview = document.getElementById('logoImagePreview');
+        const bgImagePreview = document.getElementById('bgImagePreview');
+        const bgColorPreview = document.getElementById('bgColorPreview');
+        const textColorPreview = document.getElementById('textColorPreview');
+        
+        // Event Listeners
+        logoText.addEventListener('input', updateLogo);
+        logoSubtitle.addEventListener('input', updateLogo);
+        bgColor.addEventListener('input', updateLogo);
+        textColor.addEventListener('input', updateLogo);
+        patternSelect.addEventListener('change', updateLogo);
+        decorationStyle.addEventListener('change', updateLogo);
+        logoImage.addEventListener('change', handleLogoImage);
+        bgImage.addEventListener('change', handleBgImage);
+        resetBtn.addEventListener('click', resetLogo);
+        downloadBtn.addEventListener('click', () => {
+            alert('Please take a screenshot of the logo to save it.');
+        });
+        
+        // Update Logo Preview
+        function updateLogo() {
+            // Update text
+            logoTextElement.textContent = logoText.value || 'LOGO';
+            logoSubtitleElement.textContent = logoSubtitle.value;
+            
+            // Update colors
+            document.documentElement.style.setProperty('--bg-color', bgColor.value);
+            document.documentElement.style.setProperty('--text-color', textColor.value);
+            document.documentElement.style.setProperty('--primary-color', textColor.value);
+            
+            bgColorPreview.style.backgroundColor = bgColor.value;
+            textColorPreview.style.backgroundColor = textColor.value;
+            
+            // Update pattern
+            updatePattern();
+            
+            // Update decoration style
+            updateDecoration();
+        }
+        
+        // Handle Logo Image Upload
+        function handleLogoImage(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    userImage.src = event.target.result;
+                    userImage.classList.remove('hidden');
+                    logoImagePreview.src = event.target.result;
+                    logoImagePreview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+        
+        // Handle Background Image Upload
+        function handleBgImage(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    logoPreview.style.backgroundImage = `url(${event.target.result})`;
+                    logoPreview.style.backgroundSize = 'cover';
+                    logoPreview.style.backgroundPosition = 'center';
+                    bgImagePreview.src = event.target.result;
+                    bgImagePreview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+        
+        // Update Pattern
+        function updatePattern() {
+            patternElement.innerHTML = '';
+            
+            switch(patternSelect.value) {
+                case 'dots':
+                    patternElement.innerHTML = createDotPattern();
+                    break;
+                case 'lines':
+                    patternElement.innerHTML = createLinePattern();
+                    break;
+                case 'grid':
+                    patternElement.innerHTML = createGridPattern();
+                    break;
+                case 'diamonds':
+                    patternElement.innerHTML = createDiamondPattern();
+                    break;
+                default:
+                    patternElement.innerHTML = '';
+            }
+        }
+        
+        // Create Patterns
+        function createDotPattern() {
+            return `
+            <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <pattern id="dotPattern" width="20" height="20" patternUnits="userSpaceOnUse">
+                        <circle cx="10" cy="10" r="1.5" fill="var(--primary-color)" />
+                    </pattern>
+                </defs>
+                <rect width="100%" height="100%" fill="url(#dotPattern)" />
+            </svg>`;
+        }
+        
+        function createLinePattern() {
+            return `
+            <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <pattern id="linePattern" width="20" height="20" patternUnits="userSpaceOnUse">
+                        <line x1="0" y1="10" x2="20" y2="10" stroke="var(--primary-color)" stroke-width="0.5" />
+                    </pattern>
+                </defs>
+                <rect width="100%" height="100%" fill="url(#linePattern)" />
+            </svg>`;
+        }
+        
+        function createGridPattern() {
+            return `
+            <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <pattern id="gridPattern" width="30" height="30" patternUnits="userSpaceOnUse">
+                        <line x1="0" y1="0" x2="30" y2="0" stroke="var(--primary-color)" stroke-width="0.5" />
+                        <line x1="0" y1="0" x2="0" y2="30" stroke="var(--primary-color)" stroke-width="0.5" />
+                    </pattern>
+                </defs>
+                <rect width="100%" height="100%" fill="url(#gridPattern)" />
+            </svg>`;
+        }
+        
+        function createDiamondPattern() {
+            return `
+            <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <pattern id="diamondPattern" width="30" height="30" patternUnits="userSpaceOnUse">
+                        <path d="M15,0 L30,15 L15,30 L0,15 Z" fill="none" stroke="var(--primary-color)" stroke-width="0.5" />
+                    </pattern>
+                </defs>
+                <rect width="100%" height="100%" fill="url(#diamondPattern)" />
+            </svg>`;
+        }
+        
+        // Update Decoration
+        function updateDecoration() {
+            const flourishElements = document.querySelectorAll('.logo-flourish');
+            
+            // Reset visibility
+            leafContainer.style.display = 'flex';
+            flourishElements.forEach(el => el.style.display = 'block');
+            
+            switch(decorationStyle.value) {
+                case 'leaves':
+                    leafContainer.style.display = 'flex';
+                    flourishElements.forEach(el => el.style.display = 'block');
+                    break;
+                case 'flourish':
+                    leafContainer.style.display = 'none';
+                    flourishElements.forEach(el => el.style.display = 'block');
+                    break;
+                case 'minimal':
+                    leafContainer.style.display = 'none';
+                    flourishElements.forEach(el => el.style.display = 'none');
+                    break;
+                case 'none':
+                    leafContainer.style.display = 'none';
+                    flourishElements.forEach(el => el.style.display = 'none');
+                    break;
+            }
+        }
+        
+        // Reset Logo to Default
+        function resetLogo() {
+            logoText.value = 'PRODUCT';
+            logoSubtitle.value = '';
+            bgColor.value = '#1a1a1a';
+            textColor.value = '#d4af37';
+            patternSelect.value = 'none';
+            decorationStyle.value = 'leaves';
+            
+            // Clear images
+            userImage.classList.add('hidden');
+            userImage.src = '';
+            logoPreview.style.backgroundImage = 'none';
+            
+            // Clear preview images
+            logoImagePreview.style.display = 'none';
+            bgImagePreview.style.display = 'none';
+            
+            // Update logo
+            updateLogo();
+        }
+        
+        // Initialize logo
+        updateLogo();
+    </script>
+</body>
+</html>
